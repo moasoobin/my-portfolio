@@ -1,11 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   const cards = document.querySelectorAll(".video-card");
   
-  cards.forEach((card, index) => {
+  cards.forEach((card) => {
     const videoSrc = card.getAttribute("data-video");
     const photoSrc = card.getAttribute("data-photo");
-    
-    console.log(`載入卡片 ${index + 1}:`, { videoSrc, photoSrc });
     
     // 建立容器
     const wrapper = document.createElement("div");
@@ -22,36 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // 建立封面
     const img = document.createElement("img");
+    img.src = photoSrc;
     img.className = "thumbnail";
     img.alt = "Video thumbnail";
-    
-    // 關鍵修改: 先不設定 src,等載入成功再顯示
-    img.style.opacity = "0";
     wrapper.appendChild(img);
-    
-    // 圖片載入成功
-    img.addEventListener("load", () => {
-      console.log(`✅ 圖片 ${index + 1} 載入成功:`, photoSrc);
-      console.log(`   尺寸: ${img.naturalWidth}x${img.naturalHeight}`);
-      img.style.opacity = "1";
-    });
-    
-    // 圖片載入失敗
-    img.addEventListener("error", () => {
-      console.error(`❌ 圖片 ${index + 1} 載入失敗:`, photoSrc);
-      console.error(`   完整路徑: ${img.src}`);
-      console.error(`   請檢查:`);
-      console.error(`   1. 檔案名稱: ${photoSrc}`);
-      console.error(`   2. 檔案是否存在於正確位置?`);
-      console.error(`   3. 大小寫是否完全一致?`);
-      
-      // 備用方案: 顯示影片的第一幀
-      img.style.display = "none";
-      video.load();
-    });
-    
-    // 設定圖片來源 (放在最後)
-    img.src = photoSrc;
     
     // 建立播放按鈕
     const btn = document.createElement("div");
