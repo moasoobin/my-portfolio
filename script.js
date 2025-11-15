@@ -1,32 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const cards = document.querySelectorAll(".video-card");
-  const loadedCards = new Set(); // 追蹤已載入的卡片
   
-  // 優化後的 Observer - 更嚴格的觸發條件
-  const observerOptions = {
-    root: null,
-    rootMargin: "0px", // 移除提前載入
-    threshold: 0.1 // 至少 10% 可見才載入
-  };
-  
-  const imageObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !loadedCards.has(entry.target)) {
-        loadedCards.add(entry.target);
-        // 使用 setTimeout 防止同時載入過多
-        setTimeout(() => {
-          loadCardContent(entry.target);
-        }, 100);
-      }
-    });
-  }, observerOptions);
-  
-  // 觀察所有卡片
-  cards.forEach(card => {
-    imageObserver.observe(card);
-  });
-  
-  function loadCardContent(card) {
+  cards.forEach((card) => {
     const videoSrc = card.getAttribute("data-video");
     const photoSrc = card.getAttribute("data-photo");
     
@@ -35,22 +10,19 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.className = "video-wrapper";
     card.appendChild(wrapper);
     
-    // 建立影片(完全不預載)
+    // 建立影片
     const video = document.createElement("video");
+    video.src = videoSrc;
     video.controls = true;
     video.playsInline = true;
-    video.preload = "none";
+    video.preload = "metadata";
     wrapper.appendChild(video);
     
     // 建立封面
     const img = document.createElement("img");
+    img.src = photoSrc;
     img.className = "thumbnail";
     img.alt = "Video thumbnail";
-    
-    // 使用 loading="lazy" 原生延遲載入
-    img.loading = "lazy";
-    img.src = photoSrc;
-    
     wrapper.appendChild(img);
     
     // 建立播放按鈕
@@ -60,19 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.setAttribute("aria-label", "Play video");
     wrapper.appendChild(btn);
     
-    let videoLoaded = false;
-    
     // 播放影片
     function playVideo() {
-      // 只在第一次點擊時載入影片
-      if (!videoLoaded) {
-        video.src = videoSrc;
-        videoLoaded = true;
-      }
-      
       img.classList.add("hidden");
       btn.classList.add("hidden");
-      
       video.play().catch(err => {
         console.log("播放失敗:", err);
         showCover();
@@ -96,5 +59,5 @@ document.addEventListener("DOMContentLoaded", () => {
       img.classList.add("hidden");
       btn.classList.add("hidden");
     });
-  }
+  });
 });
