@@ -24,47 +24,42 @@ h1 {
   text-align: center;
   font-size: clamp(1rem, 3vw, 1.2rem);
   color: #ff9800;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   font-weight: 400;
   letter-spacing: 0.5px;
 }
 
-/* Linktree 按鈕樣式 */
+/* Linktree 按鈕樣式 - 底部版本 */
 .linktree-container {
   text-align: center;
-  margin: 20px auto 40px;
+  padding: 40px 20px 60px;
+  margin: 0 auto;
 }
 
 .linktree-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 32px;
-  background: linear-gradient(135deg, #ff9800 0%, #ffb300 100%);
-  color: white;
+  display: inline-block;
+  padding: 18px 40px;
+  background: rgba(255, 248, 194, 0.6);
+  color: #ff9800;
   text-decoration: none;
   font-size: 1.1rem;
   font-weight: 600;
-  border-radius: 50px;
-  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  letter-spacing: 0.5px;
+  letter-spacing: 1.5px;
+  border: 2px solid rgba(255, 152, 0, 0.3);
 }
 
 .linktree-btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(255, 152, 0, 0.6);
-  background: linear-gradient(135deg, #ffb300 0%, #ffc107 100%);
+  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.3);
+  background: rgba(255, 235, 150, 0.8);
+  border-color: rgba(255, 152, 0, 0.5);
 }
 
 .linktree-btn:active {
   transform: translateY(-1px);
-}
-
-.linktree-icon {
-  width: 24px;
-  height: 24px;
-  fill: white;
 }
 
 .video-grid {
@@ -75,7 +70,7 @@ h1 {
   align-items: center;
   max-width: 1600px;
   margin: 0 auto;
-  padding: 0 20px 60px;
+  padding: 0 20px 20px;
 }
 .video-card {
   position: relative;
@@ -178,7 +173,7 @@ h1 {
   .video-grid {
     grid-template-columns: 1fr;
     gap: 25px;
-    padding: 0 15px 40px;
+    padding: 0 15px 20px;
   }
   
   h1 {
@@ -186,14 +181,14 @@ h1 {
   }
   
   .subtitle {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     font-size: 1rem;
   }
   
   /* Linktree 按鈕手機版 */
   .linktree-btn {
     font-size: 1rem;
-    padding: 14px 28px;
+    padding: 16px 32px;
   }
   
   .play-btn {
@@ -212,7 +207,7 @@ h1 {
   .video-grid {
     grid-template-columns: 1fr;
     gap: 20px;
-    padding: 0 10px 30px;
+    padding: 0 10px 20px;
   }
   
   .subtitle {
@@ -222,7 +217,7 @@ h1 {
   
   .linktree-btn {
     font-size: 0.95rem;
-    padding: 12px 24px;
+    padding: 14px 28px;
   }
   
   .play-btn {
