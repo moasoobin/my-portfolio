@@ -1,19 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
   const cards = document.querySelectorAll(".video-card");
+  const loadedCards = new Set(); // 追蹤已載入的卡片
   
-  // 使用 Intersection Observer 實現延遲載入
+  // 優化後的 Observer - 更嚴格的觸發條件
   const observerOptions = {
     root: null,
-    rootMargin: "50px", // 提前 50px 開始載入
-    threshold: 0.01
+    rootMargin: "0px", // 移除提前載入
+    threshold: 0.1 // 至少 10% 可見才載入
   };
   
-  const imageObserver = new IntersectionObserver((entries, observer) => {
+  const imageObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const card = entry.target;
-        loadCardContent(card);
-        observer.unobserve(card); // 載入後停止觀察
+      if (entry.isIntersecting && !loadedCards.has(entry.target)) {
+        loadedCards.add(entry.target);
+        // 使用 setTimeout 防止同時載入過多
+        setTimeout(() => {
+          loadCardContent(entry.target);
+        }, 100);
       }
     });
   }, observerOptions);
@@ -32,19 +35,22 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.className = "video-wrapper";
     card.appendChild(wrapper);
     
-    // 建立影片(不預先載入)
+    // 建立影片(完全不預載)
     const video = document.createElement("video");
-    video.setAttribute("data-src", videoSrc); // 先不設置 src
     video.controls = true;
     video.playsInline = true;
-    video.preload = "none"; // 改為 none,只有點擊時才載入
+    video.preload = "none";
     wrapper.appendChild(video);
     
-    // 建立封面(使用延遲載入)
+    // 建立封面
     const img = document.createElement("img");
-    img.src = photoSrc; // 已進入視窗才載入
     img.className = "thumbnail";
     img.alt = "Video thumbnail";
+    
+    // 使用 loading="lazy" 原生延遲載入
+    img.loading = "lazy";
+    img.src = photoSrc;
+    
     wrapper.appendChild(img);
     
     // 建立播放按鈕
@@ -54,11 +60,14 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.setAttribute("aria-label", "Play video");
     wrapper.appendChild(btn);
     
+    let videoLoaded = false;
+    
     // 播放影片
     function playVideo() {
-      // 第一次點擊時才載入影片
-      if (!video.src) {
-        video.src = video.getAttribute("data-src");
+      // 只在第一次點擊時載入影片
+      if (!videoLoaded) {
+        video.src = videoSrc;
+        videoLoaded = true;
       }
       
       img.classList.add("hidden");
