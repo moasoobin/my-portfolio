@@ -23,7 +23,7 @@ h1 {
 .subtitle {
   text-align: center;
   font-size: clamp(1rem, 3vw, 1.2rem);
-  color: #666;
+  color: #ff9800;
   margin-bottom: 40px;
   font-weight: 400;
   letter-spacing: 0.5px;
